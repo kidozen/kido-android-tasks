@@ -99,6 +99,11 @@ public class MainActivity extends FragmentActivity implements
 			case R.id.menu_settings:
 				Toast.makeText(MainActivity.this,"Settings Operation is performed!",Toast.LENGTH_SHORT ).show();
 				return true;
+			case R.id.action_refresh:
+                final ActionBar actionBar = getActionBar();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                this.onTabSelected(actionBar.getSelectedTab(), ft);
+                return true;
 		}
 		return super.onContextItemSelected(item);
 	}
