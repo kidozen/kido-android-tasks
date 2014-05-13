@@ -9,10 +9,10 @@ public enum SharedKidozen {
 	INSTANCE;
 	private KZApplication application;
 	
-	static String TENANT = "http://kidodemo.dev.kidozen.com/";
+	static String TENANT = "http://tenant";
 	static String APP ="demo";
-	static String USER ="armonia@kidozen.com";
-	static String PASS ="pass";
+	static String USER ="your user @kidozen.com";
+	static String PASS ="your secret";
 	private static String TAG = "SharedKidozen";
 	private static final Object lock = new Object();
 
