@@ -12,14 +12,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 
 
 public class DataHelper {
 
-    public static final String USER = "user@kidozen.com";
-    public static final String PASS = "password";
+    public static final String USER = "loadtests@kidozen.com";
+    public static final String PASS = "pass";
 
 
     final String TAG = "DataHelper";
@@ -28,7 +29,7 @@ public class DataHelper {
 	// Listeners for call back
 	private IKidozenApplicationSetup mAppSetupComplete;
 	
-	public void SetupKidozen(IKidozenApplicationSetup setupComplete) {
+	public void SetupKidozen(IKidozenApplicationSetup setupComplete, final Context context) {
 		Log.i(TAG, "kidozenAuthentication()");
 		try {
 			mAppSetupComplete = setupComplete;
@@ -40,6 +41,8 @@ public class DataHelper {
                             try {
                                 tasksStorage = application.Storage("tasks");
                                 mAppSetupComplete.onKidozenAppSetupComplete(0);
+                                application.EnableAnalytics(context);
+
                             } catch (Exception storageE) {
                                 storageE.printStackTrace();
                             }
@@ -158,6 +161,7 @@ public class DataHelper {
 				@Override
 				public void onFinish(ServiceEvent arg0) {
 					deleteComplete.onDeleteComplete(true);
+
 				}
 			});
 			

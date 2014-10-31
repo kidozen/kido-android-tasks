@@ -37,13 +37,8 @@ public class MainActivity extends FragmentActivity implements
 
 		// Set up the action bar to show tabs.
 		dh= new DataHelper();
-		dh.SetupKidozen(this);
-        try {
-            SharedKidozen.Application().EnableAnalytics(this);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+		dh.SetupKidozen(this, this);
+
 	}
 
 	@Override
