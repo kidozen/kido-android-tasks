@@ -2,6 +2,7 @@ package com.kidozen.examples.services;
 
 import java.util.ArrayList;
 
+import kidozen.client.KZApplication;
 import kidozen.client.Mail;
 import kidozen.client.ServiceEvent;
 import kidozen.client.ServiceEventListener;
@@ -9,11 +10,19 @@ import kidozen.client.Storage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import android.app.Application;
 import android.util.Log;
 
 
+
 public class DataHelper {
-	final String TAG = "DataHelper";
+
+    public static final String USER = "user@kidozen.com";
+    public static final String PASS = "password";
+
+
+    final String TAG = "DataHelper";
 	public static Storage tasksStorage;
 
 	// Listeners for call back
@@ -23,8 +32,20 @@ public class DataHelper {
 		Log.i(TAG, "kidozenAuthentication()");
 		try {
 			mAppSetupComplete = setupComplete;
-			tasksStorage = SharedKidozen.Application().Storage("tasks");
-			mAppSetupComplete.onKidozenAppSetupComplete(0);
+            final KZApplication application = SharedKidozen.Application();
+
+            application.Authenticate("Kidozen", USER, PASS, new ServiceEventListener() {
+                        @Override
+                        public void onFinish(ServiceEvent e) {
+                            try {
+                                tasksStorage = application.Storage("tasks");
+                                mAppSetupComplete.onKidozenAppSetupComplete(0);
+                            } catch (Exception storageE) {
+                                storageE.printStackTrace();
+                            }
+                        }
+                    });
+
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 			e.printStackTrace();
@@ -118,8 +139,8 @@ public class DataHelper {
 			String id = task.getString("_id");
 			task.remove("completed");
 			task.put("completed", true);
-			
-			tasksStorage.Update(task, id, new ServiceEventListener() {
+
+			tasksStorage.Update(id, task, new ServiceEventListener() {
 				@Override
 				public void onFinish(ServiceEvent arg0) {
 					updateComplete.onUpdateComplete(true);
