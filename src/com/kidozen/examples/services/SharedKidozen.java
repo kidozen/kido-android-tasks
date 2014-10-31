@@ -2,6 +2,7 @@ package com.kidozen.examples.services;
 
 import kidozen.client.KZApplication;
 
+
 public enum SharedKidozen {
 	INSTANCE;
 	private KZApplication application;
@@ -15,11 +16,16 @@ public enum SharedKidozen {
     public static final String APPKEY = "applicationKey";
     
 
-    public static KZApplication Application() throws Exception {
-        if (INSTANCE.application == null) {
-            INSTANCE.application = new KZApplication(TENANT, APP, APPKEY, false);
+    public static KZApplication Application()  {
+        try {
+            if (INSTANCE.application == null) {
+                INSTANCE.application = new KZApplication(TENANT, APP, APPKEY, false);
+            }
+            return INSTANCE.application;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-		return INSTANCE.application;
 
     }
 

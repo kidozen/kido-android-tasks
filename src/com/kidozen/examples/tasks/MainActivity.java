@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import com.kidozen.examples.services.DataHelper;
 import com.kidozen.examples.services.IKidozenApplicationSetup;
 import com.kidozen.examples.services.ITaskSaveComplete;
+import com.kidozen.examples.services.SharedKidozen;
 
 import android.app.ActionBar;
 import android.app.Dialog;
@@ -37,7 +38,12 @@ public class MainActivity extends FragmentActivity implements
 		// Set up the action bar to show tabs.
 		dh= new DataHelper();
 		dh.SetupKidozen(this);
-		
+        try {
+            SharedKidozen.Application().EnableAnalytics(this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
@@ -86,6 +92,16 @@ public class MainActivity extends FragmentActivity implements
 		    						@Override
 		    						public void onSaveComplete(boolean status, JSONObject kidozenResponse) {
 		    	                        dialog.cancel();
+
+                                        try {
+                                            JSONObject obj = new JSONObject();
+                                            obj.put("category", "Unknown");
+                                            SharedKidozen.Application().TagCustom("taskCreated", obj);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+
 		    						}
 		    					});
 							}

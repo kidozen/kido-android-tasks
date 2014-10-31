@@ -26,6 +26,7 @@ import com.kidozen.examples.services.IKidozenEmail;
 import com.kidozen.examples.services.ITaskDeleteComplete;
 import com.kidozen.examples.services.ITaskQueryComplete;
 import com.kidozen.examples.services.ITaskUpdateComplete;
+import com.kidozen.examples.services.SharedKidozen;
 
 public class TasksFragment extends Fragment {
 	public static final String ARG_SECTION_NUMBER = "section_number";
@@ -47,6 +48,16 @@ public class TasksFragment extends Fragment {
 							@Override
 							public void onUpdateComplete(boolean status) {
 								// TODO Auto-generated method stub
+                                try {
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("Category", "Unknown");
+
+                                    SharedKidozen.Application().TagCustom("TaskCompleted", obj);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
 							}
 						});
 						break;
@@ -56,6 +67,14 @@ public class TasksFragment extends Fragment {
 							@Override
 							public void onDeleteComplete(boolean success) {
 								// TODO Auto-generated method stub
+                                try {
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("Category", "Unknown");
+
+                                    SharedKidozen.Application().TagCustom("TaskDeleted", obj);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 							}
 						});
 						break;
@@ -64,6 +83,15 @@ public class TasksFragment extends Fragment {
 							@Override
 							public void onEmailSent(boolean success) {
 								// TODO Auto-generated method stub
+                                try {
+                                    JSONObject obj = new JSONObject();
+                                    obj.put("mailTo", "somebody@gmail.com");
+                                    obj.put("mailFrom", "somebody@nowhere.com");
+
+                                    SharedKidozen.Application().TagCustom("SentEmail", obj);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 							}
 						}
 						);
